@@ -1,15 +1,18 @@
-import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+export async function load({ params }) {
+	const post = await import(`../../../content/blog/${params.slug}.md`);
+	return {
+		Content: post.default,
+		meta: post.metadata
+	};
+}
 
-export const load: PageLoad = async ({ params }) => {
-	try {
-        // Adjust the path relative to THIS file
-		const post = await import(`../../../blogs/${params.slug}.md`);
-		return {
-			content: post.default,
-			meta: post.metadata
-		};
-	} catch (e) {
-		error(404, `Post not found`);
-	}
-};
+export async function entries() {
+	const modules = import.meta.glob('../../../content/blog/*.md');
+
+	return Object.keys(modules).map((path) => ({
+		slug: path.split('/').pop()?.replace('.md', '')
+	}));
+}
+
+export const prerender = true;
+;
