@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography'; /* 👈 Add this line */
+
+:root {
+  --primary-color: darkorange;
+  --bg-color: #181818;
+  --text-color: #f6fafd;
+  --font-main: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  background-color: var(--bg-color);
+  font-family: var(--font-main);
+  color: var(--text-color);
+}
