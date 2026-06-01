@@ -8,7 +8,7 @@
     <header class="mb-16">
       <h1 class="text-5xl font-bold text-white mb-4">Blogs</h1>
       <p class="text-xl text-gray-400 font-light">
-        Notes on systems, graphics, and compilers.
+        The blogs
       </p>
     </header>
 

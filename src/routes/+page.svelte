@@ -37,8 +37,8 @@
 			transition:fade={{ duration: 800, delay: 200 }}
 		>
 			<p>
-				I’m a student who builds things because I enjoy it. This blog exists simply because I want to
-				write, experiment, and document what I’m working on, mostly around 
+				I’m a student who likes to play around with stuff in a fuck around and find our kind of way. This blog exists simply because I want to
+				write, experiment and document what I’m working on, mostly around 
 				<span class="text-[var(--primary-color)] font-semibold">systems programming</span>,
 				<span class="text-[var(--primary-color)] font-semibold">graphics</span>, 
 				<span class="text-[var(--primary-color)] font-semibold">compilers</span>, and 
@@ -46,10 +46,10 @@
 			</p>
 
 			<p>
-				A lot of it is C/C++, Vulkan, RISC-V, and small tools I build to understand how things work
+				A lot of it is going to be about small tools i built to understand how things work
 				under the hood. I’m not trying to teach formally or present polished tutorials. Most posts
 				are informal notes, project logs, and thoughts written while I’m learning or trying
-				something new. &larr; (This is given by Gemini)
+				something new.
 			</p>
 
 			<p class="italic opacity-60 mt-4 text-base">
