@@ -1,7 +1,8 @@
 ---
 title: My First Post
 date: '2025-01-01'
-description: This is a description that will show on the card.
+description: Why I started this blog and my plan for regular writing.
+category: 'life-skills'
 tags: ['svelte', 'coding']
 author: Anikait
 ---
@@ -10,8 +11,4 @@ author: Anikait
 
 This is my first post using **Markdown**!
 
-Most likely my plan is to atlest post a blog once in two week
-as i feel like by that time i might have made some progress one 
-of the main reason for starting this is so i can be movtivated 
-to code and not fall into trap of just vibing whole thing learn
-somethings along the way
+Most likely my plan is to at least post a blog once every two weeks as I feel like by that time I might have made some progress. One of the main reasons for starting this is so I can stay motivated to code and not fall into the trap of just passively consuming, and learn things along the way.

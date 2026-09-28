@@ -24,7 +24,11 @@ export const load: PageLoad = async () => {
 
 	posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+	const projectPosts = posts.filter((post) =>
+		post.tags.some((tag) => tag.toLowerCase() === 'project')
+	);
+
 	return {
-		posts
+		projectPosts
 	};
 };

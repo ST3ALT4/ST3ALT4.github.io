@@ -1,10 +1,17 @@
-import type { PageLoad } from './$types';
+import type { PageLoad, EntryGenerator } from './$types';
 import { error } from '@sveltejs/kit';
+import type { Component } from 'svelte';
+import type { BlogPostMeta } from '$lib/types';
 
-const posts = import.meta.glob('../../../blogs/*.md');
+interface PostModule {
+	default: Component;
+	metadata: BlogPostMeta;
+}
+
+const posts = import.meta.glob<PostModule>('/src/blogs/*.md');
 
 export const load: PageLoad = async ({ params }) => {
-	const path = `../../../blogs/${params.slug}.md`;
+	const path = `/src/blogs/${params.slug}.md`;
 	const loader = posts[path];
 
 	if (!loader) {
@@ -21,9 +28,9 @@ export const load: PageLoad = async ({ params }) => {
 
 export const prerender = true;
 
-export function entries() {
-	return Object.keys(posts).map((path) => ({
-		slug: path.split('/').pop()?.replace('.md', '')
-	}));
-}
-
+export const entries: EntryGenerator = () => {
+	return Object.keys(posts).map((path) => {
+		const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+		return { slug };
+	});
+};

@@ -1,9 +1,7 @@
 export const ROUTES = {
-  home: {
-    index: '/',
-    projects: '/projects',
-    blogList: '/blog',
-    blog: (id: number | string) => `/blog/${id}`
-  }
+	home: {
+		index: '/',
+		blogList: '/blog',
+		blog: (slug: string) => `/blog/${slug}`
+	}
 } as const;
-
