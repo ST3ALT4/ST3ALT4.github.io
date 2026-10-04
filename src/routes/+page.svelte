@@ -19,7 +19,13 @@
 		html?: string;
 	}
 
-	let entries = $state<TerminalEntry[]>([]);
+	let entries = $state<TerminalEntry[]>([
+		{
+			id: 0,
+			type: 'motd',
+			html: getMotd()
+		}
+	]);
 	let currentInput = $state('');
 	let historyLog = $state<string[]>([]);
 	let historyCursor = $state(-1);
@@ -43,13 +49,15 @@
 	}
 
 	onMount(() => {
-		entries = [
-			{
-				id: Date.now(),
-				type: 'motd',
-				html: getMotd()
-			}
-		];
+		if (entries.length === 0) {
+			entries = [
+				{
+					id: Date.now(),
+					type: 'motd',
+					html: getMotd()
+				}
+			];
+		}
 		syncCursor();
 
 		const params = new URLSearchParams(window.location.search);
@@ -370,7 +378,8 @@
 					{#if currentInput.length === 0}
 						<span class="cursor-block cursor-end" class:focused={isInputFocused}>&nbsp;</span>
 						<span class="placeholder-text">
-							type 'help' or command...{#if !isInputFocused} · [VISUAL] press i to type, Esc to return{/if}
+							type 'help' or command...{#if !isInputFocused}
+								· [VISUAL] press i to type, Esc to return{/if}
 						</span>
 					{:else}
 						{@const selStart = Math.min(cursorPosition, selectionEnd)}

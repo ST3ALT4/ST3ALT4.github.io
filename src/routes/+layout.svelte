@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import TmuxBar from '$lib/components/TmuxBar.svelte';
 
 	let { children } = $props();
@@ -8,7 +7,7 @@
 
 <svelte:head>
 	<title>st3alt4</title>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/favicon.svg" />
 	<meta name="description" content="Personal portfolio and systems programming notes" />
 </svelte:head>
 

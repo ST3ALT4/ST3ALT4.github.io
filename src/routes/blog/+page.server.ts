@@ -1,9 +1,9 @@
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import type { BlogPostMeta, BlogCategory } from '$lib/types';
 
 export const prerender = true;
 
-export const load: PageLoad = async () => {
+export const load: PageServerLoad = async () => {
 	const paths = import.meta.glob<{ metadata?: Partial<BlogPostMeta> }>('/src/blogs/*.md', {
 		eager: true
 	});
