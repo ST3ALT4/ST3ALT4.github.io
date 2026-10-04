@@ -1,5 +1,7 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { ROUTES } from '$lib/routes';
 
 	interface Props {
 		title?: string;
@@ -23,22 +25,46 @@
 					day: 'numeric'
 				});
 	});
+
+	let fileSlug = $derived.by(() => {
+		if (!title) return 'post';
+		return title
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-|-$/g, '');
+	});
+
+	onMount(() => {
+		function handleKeyDown(e: KeyboardEvent) {
+			if (
+				e.target instanceof HTMLInputElement ||
+				e.target instanceof HTMLTextAreaElement ||
+				e.target instanceof HTMLSelectElement
+			) {
+				return;
+			}
+			if (e.key === 'q' || e.key === 'Q') {
+				goto(ROUTES.home.blogList);
+			}
+		}
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	});
 </script>
 
-<article class="post-terminal-card">
-	<!-- Terminal Window Titlebar -->
-	<div class="window-bar">
-		<div class="window-dots" aria-hidden="true">
-			<span class="dot d-r"></span>
-			<span class="dot d-y"></span>
-			<span class="dot d-g"></span>
+<div class="terminal-window post-window">
+	<!-- Neovim Buffer Body -->
+	<div class="terminal-body post-buffer">
+		<!-- Top command invocation -->
+		<div class="cmd-line post-cmd">
+			<span class="prompt-user">st3alt4</span><span class="prompt-colon">:</span><span
+				class="prompt-path">~/blog</span
+			><span class="prompt-char">$</span>
+			<span class="cmd-text">nvim {fileSlug}.md</span>
+			<span class="cmd-meta">[buffer: readonly]</span>
 		</div>
-		<span class="window-title">viewing: {title || 'post.md'}</span>
-		<a href="/blog" class="window-back-link">← cd .. (/blog)</a>
-	</div>
 
-	<!-- Post Content Wrapper -->
-	<div class="post-inner">
+		<!-- Post Header metadata -->
 		<header class="post-header">
 			{#if title}
 				<h1 class="post-title">{title}</h1>
@@ -73,95 +99,57 @@
 			</div>
 		</header>
 
+		<!-- Rendered Markdown Body -->
 		<div class="post-body">
 			{#if children}
 				{@render children()}
 			{/if}
 		</div>
 
-		<footer class="post-footer">
-			<div class="footer-actions">
-				<a href="/blog" class="back-link">← return to blog directory</a>
-				<span class="footer-note">// end of buffer</span>
+		<!-- Vim Statusline -->
+		<div class="vim-statusline">
+			<div class="vim-left">
+				<span class="vim-mode">NORMAL</span>
+				<span class="vim-filename">"{fileSlug}.md"</span>
+				<span class="vim-flag">[RO]</span>
 			</div>
-		</footer>
+			<div class="vim-right">
+				<span class="vim-item">utf-8</span>
+				<span class="vim-item">markdown</span>
+				<span class="vim-item">100%</span>
+				<a href={ROUTES.home.blogList} class="vim-exit-action" title="Exit buffer"> :q (exit) </a>
+			</div>
+		</div>
 	</div>
-</article>
+</div>
 
 <style>
-	.post-terminal-card {
+	.post-window {
 		width: 100%;
+		border-radius: 0;
+	}
+
+	.post-buffer {
 		max-width: 960px;
 		margin: 0 auto;
-		background-color: var(--bg-surface);
-		border: 1px solid var(--line-color);
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1.5rem 1.25rem 2rem;
 		display: flex;
 		flex-direction: column;
-	}
-
-	.window-bar {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.6rem 1rem;
-		background-color: var(--bg-raised);
-		border-bottom: 1px solid var(--line-color);
-		font-size: 0.8rem;
-		gap: 1rem;
-	}
-
-	.window-dots {
-		display: flex;
-		gap: 0.35rem;
-		align-items: center;
-	}
-
-	.dot {
-		width: 9px;
-		height: 9px;
-		border-radius: 50%;
-	}
-
-	.d-r {
-		background-color: #ef4444;
-	}
-	.d-y {
-		background-color: #f59e0b;
-	}
-	.d-g {
-		background-color: #10b981;
-	}
-
-	.window-title {
-		color: var(--text-color);
-		font-weight: 600;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-
-	.window-back-link {
-		color: var(--primary-color);
-		text-decoration: none;
-		font-size: 0.78rem;
-		white-space: nowrap;
-	}
-
-	.window-back-link:hover {
-		text-decoration: underline;
-	}
-
-	.post-inner {
-		padding: 2rem 1.25rem 3rem;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
+		gap: 1.75rem;
 	}
 
 	@media (min-width: 640px) {
-		.post-inner {
-			padding: 3rem 2.5rem 4rem;
+		.post-buffer {
+			padding: 2.25rem 2.25rem 2.5rem;
+			gap: 2rem;
 		}
+	}
+
+	.post-cmd {
+		border-bottom: 1px dashed var(--line-color);
+		padding-bottom: 1rem;
 	}
 
 	.post-header {
@@ -223,6 +211,7 @@
 		border-radius: 2px;
 	}
 
+	/* Markdown Content Typography */
 	.post-body {
 		font-size: 1rem;
 		line-height: 1.8;
@@ -292,7 +281,7 @@
 	}
 
 	.post-body :global(pre) {
-		background-color: var(--bg-surface);
+		background-color: var(--bg-raised);
 		border: 1px solid var(--line-color);
 		padding: 1.25rem;
 		overflow-x: auto;
@@ -314,31 +303,57 @@
 		margin: 2.5rem 0;
 	}
 
-	.post-footer {
-		border-top: 1px solid var(--line-color);
-		padding-top: 1.5rem;
-		font-size: 0.85rem;
-	}
-
-	.footer-actions {
+	/* Vim Statusline */
+	.vim-statusline {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: 1rem;
+		gap: 0.75rem;
+		padding: 0.4rem 0.75rem;
+		background-color: var(--bg-raised);
+		border: 1px solid var(--line-color);
+		font-size: 0.75rem;
+		margin-top: 1.5rem;
+		font-family: var(--font-mono);
 	}
 
-	.back-link {
+	.vim-left,
+	.vim-right {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.vim-mode {
+		background-color: var(--primary-color);
+		color: var(--bg-color);
+		font-weight: 700;
+		padding: 0.05rem 0.4rem;
+		letter-spacing: 0.05em;
+	}
+
+	.vim-filename {
+		color: var(--text-color);
+		font-weight: 600;
+	}
+
+	.vim-flag {
+		color: var(--text-muted);
+	}
+
+	.vim-item {
+		color: var(--text-muted);
+	}
+
+	.vim-exit-action {
 		color: var(--primary-color);
 		text-decoration: none;
+		font-weight: 600;
 	}
 
-	.back-link:hover {
+	.vim-exit-action:hover {
 		text-decoration: underline;
-	}
-
-	.footer-note {
-		color: var(--text-muted);
-		font-size: 0.78rem;
 	}
 </style>

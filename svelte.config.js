@@ -23,6 +23,10 @@ const config = {
 			fallback: null
 		}),
 
+		prerender: {
+			handleMissingId: 'ignore'
+		},
+
 		paths: {
 			base: process.env.BASE_PATH ?? ''
 		}

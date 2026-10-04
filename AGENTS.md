@@ -31,12 +31,11 @@ This file provides guidelines, architecture details, and commands for AI coding 
 │   │   ├── components/         # Reusable Svelte components
 │   │   │   ├── BlogCard.svelte
 │   │   │   ├── BlogLayout.svelte
-│   │   │   ├── Footer.svelte
-│   │   │   └── Toolbar.svelte
+│   │   │   └── TmuxBar.svelte
 │   │   ├── routes.ts           # Navigation route definitions
 │   │   └── types.ts            # Shared TypeScript definitions
 │   └── routes/                 # SvelteKit file-based routing
-│       ├── +layout.svelte      # Root layout (Header, Main, Footer)
+│       ├── +layout.svelte      # Root layout (Continuous buffer + TmuxBar)
 │       ├── +layout.ts          # Prerender configuration
 │       ├── +page.svelte        # Home / Terminal Landing page
 │       ├── +page.ts            # Home loader (queries projects dynamically)
