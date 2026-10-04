@@ -85,10 +85,6 @@ export function renderSysinfo(): string {
 				<span class="spec-v highlight">st3alt4</span>
 			</div>
 			<div class="spec-row">
-				<span class="spec-k">institute:</span>
-				<span class="spec-v">Thapar University</span>
-			</div>
-			<div class="spec-row">
 				<span class="spec-k">interest:</span>
 				<span class="spec-v">High Performance Computing · Embedded · Digital Design · Compilers</span>
 			</div>
@@ -191,9 +187,8 @@ export function renderContact(): string {
 	return `
 <div class="contact-output">
 	<p class="contact-bio">
-		Electronics & Computer Engineering @ Thapar Institute. Focused on compiler internals,
-		low-level tooling, custom CUDA kernels, and real-time embedded devices. Always open to
-		conversations, experiments, and technical collaborations.
+		Focused on compiler internals, low-level tooling, custom CUDA kernels, and real-time
+		embedded devices. Always open to conversations, experiments, and technical collaborations.
 	</p>
 	<div class="contact-channels">
 		<div class="channel-row">
